@@ -14,7 +14,7 @@ private:
     // std::vector<std::shared_ptr<canport>> CANport;
 
 public:
-    canboard(int _CANboard_ID, std::vector<lively_serial *> *ser,std::condition_variable *_cv,std::mutex *_mtx)
+    canboard(int _CANboard_ID, std::vector<lively_serial *> *ser)
     {
         if (n.getParam("robot/CANboard/No_" + std::to_string(_CANboard_ID) + "_CANboard/CANport_num", CANport_num))
         {
@@ -26,7 +26,7 @@ public:
         }
         for (size_t j = 1; j <= CANport_num; j++) // 一个串口对应一个CANport
         {
-            CANport.push_back(new canport(j, _CANboard_ID, (*ser)[(_CANboard_ID - 1) * CANport_num + j - 1],_cv,_mtx));
+            CANport.push_back(new canport(j, _CANboard_ID, (*ser)[(_CANboard_ID - 1) * CANport_num + j - 1]));
         }
     }
     ~canboard() {}
@@ -39,13 +39,6 @@ public:
         for (canport *c : CANport)
         {
             _CANport->push_back(c);
-        }
-    }
-    void enable_send_multithread()
-    {
-        for (canport* c : CANport)
-        {
-            c->enable_send_multithread();
         }
     }
     void motor_send()

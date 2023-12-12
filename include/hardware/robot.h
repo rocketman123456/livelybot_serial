@@ -20,7 +20,7 @@ public:
     std::vector<canport *> CANPorts;
     std::vector<std::thread> ser_recv_threads, send_threads;
 
-    robot(std::condition_variable *_cv, std::mutex *_mtx)
+    robot()
     {
         if (n.getParam("robot/Seial_baudrate", Seial_baudrate))
         {
@@ -90,7 +90,7 @@ public:
         {
             for (size_t i = 1; i <= CANboard_num; i++) // 一个CANboard使用两个串口
             {
-                CANboards.push_back(canboard(i, &ser, _cv, _mtx));
+                CANboards.push_back(canboard(i, &ser));
             }
         }
 
@@ -109,14 +109,6 @@ public:
         // {
         //     std::cout<<m.get_motor_belong_canboard()<<" "<<m.get_motor_belong_canport()<<" "<<m.get_motor_id()<<std::endl;
         // }
-    }
-    void enable_send_multithread()
-    {
-        for (canport *cp : CANPorts)
-        {
-            cp->enable_send_multithread();
-        }
-        // ROS_INFO("robot ok");
     }
     void motor_send()
     {
@@ -139,21 +131,6 @@ public:
             lively_serial *s = new lively_serial(&str[i], Seial_baudrate, 1);
             ser.push_back(s);
             ser_recv_threads.push_back(std::thread(&lively_serial::recv, s));
-        }
-    }
-    void init_mutithread_send(bool use_mutex)
-    {
-        for (canport *cp : CANPorts)
-        {
-            ROS_INFO("%d %d", cp->get_canboard_id(), cp->get_canport_id());
-            if (use_mutex)
-            {
-                send_threads.push_back(std::thread(&canport::send_mutithread, cp));
-            }
-            else
-            {
-                send_threads.push_back(std::thread(&canport::send_d_mutithread, cp));
-            }
         }
     }
     void test_ser_motor()

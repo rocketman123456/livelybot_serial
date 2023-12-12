@@ -6,7 +6,6 @@
 #include <thread>
 #include "../lively_serial.h"
 
-std::mutex mu;
 class canport
 {
 private:
@@ -16,47 +15,12 @@ private:
     std::vector<motor *> Motors;
     std::map<int, motor *> Map_Motors_p;
     bool sendEnabled;
-    std::mutex *mtx;
-    std::condition_variable *cv;
     int canboard_id, canport_id;
     std::vector<motor_back_t *> Motor_data;
     lively_serial *ser;
 
 public:
-    void send_mutithread()
-    {
-        // ROS_INFO("%d %d ===1===",canboard_id,canport_id);
-        while (true)
-        {
-            std::unique_lock<std::mutex> lock(mu);
-            cv->wait(lock, [&]()
-                     { return sendEnabled; }); // 等待发送开关打开
-                                               // ROS_INFO("%d %d ===4===",canboard_id,canport_id);
-            for (motor *m : Motors)
-            {
-                // m.motor_send();
-            }
-            sendEnabled = false;
-            lock.unlock();
-            ROS_INFO("%d %d ======", canboard_id, canport_id);
-        }
-    }
-    void send_d_mutithread()
-    {
-        while (1)
-        {
-            if (sendEnabled)
-            {
-                for (motor *m : Motors)
-                {
-                    // m.motor_send();
-                }
-                sendEnabled = false;
-                ROS_INFO("%d %d ======", canboard_id, canport_id);
-            }
-        }
-    }
-    canport(int _CANport_num, int _CANboard_num, lively_serial *_ser, std::condition_variable *_cv, std::mutex *_mtx) : cv(_cv), mtx(_mtx), ser(_ser)
+    canport(int _CANport_num, int _CANboard_num, lively_serial *_ser) : ser(_ser)
     {
         canboard_id = _CANboard_num;
         canport_id = _CANport_num;
@@ -88,7 +52,7 @@ public:
         //     delete m;
         // }
     }
-    void puch_motor(std::vector<motor*> *_Motors)
+    void puch_motor(std::vector<motor *> *_Motors)
     {
         for (motor *m : Motors)
         {
@@ -109,7 +73,6 @@ public:
             // ROS_INFO("CRC: 0x%x", m->cmd.crc16);
         }
     }
-    void enable_send_multithread() { sendEnabled = true; };
     int get_motor_num() { return motor_num; }
     int get_canboard_id() { return canboard_id; }
     int get_canport_id() { return canport_id; }
