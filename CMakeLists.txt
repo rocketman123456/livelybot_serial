@@ -31,11 +31,18 @@ include_directories(
 # test
 add_executable(lvbot_test src/serial_t.cpp ${serial_SRCS})
 target_link_libraries(lvbot_test ${catkin_LIBRARIES})
+
+add_executable(test_motor_run src/test_motor_run.cpp ${serial_SRCS})
+target_link_libraries(test_motor_run ${catkin_LIBRARIES})
+
+add_executable(test_motor src/test_motor.cpp ${serial_SRCS})
+target_link_libraries(test_motor ${catkin_LIBRARIES})
 install(TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
 )
+
 ## Install headers
 install(FILES include/hardware/robot.h include/hardware/motor.h
   DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}/livelybot_serial)

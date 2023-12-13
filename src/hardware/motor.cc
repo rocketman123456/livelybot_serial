@@ -5,13 +5,13 @@ inline T motor::float2int(float in_data, uint8_t type)
     switch (type)
     {
     case 0: // radian float pos/vel to int32
-        return (int32_t)in_data / my_2pi * 100000;
+        return (int32_t)in_data / my_2pi * 100000.0;
     case 1: // angle float pos/vel to int32
-        return (int32_t)in_data / 360 * 100000;
+        return (int32_t)in_data / 360.0 * 100000.0;
     case 2: // float torque to int32
-        return (int32_t)in_data * 100000;
+        return (int32_t)in_data * 100000.0;
     case 3: // float kp/kd to int32
-        return (int16_t)in_data * 32767;
+        return (int16_t)in_data * 32767.0;
     default:
         return T();
     }
