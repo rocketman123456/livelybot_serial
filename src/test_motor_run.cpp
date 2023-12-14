@@ -7,7 +7,7 @@
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "my_serial_port");
+    ros::init(argc, argv, "test_motor_run");
     ros::NodeHandle n;
     ros::Rate r(500);
     robot rb;
@@ -19,11 +19,11 @@ int main(int argc, char **argv)
     {
         // ROS_INFO_STREAM("START");
         /////////////////////////send
-        // for (motor *m : rb.Motors)
-        // {
-            // m->fresh_cmd(0.0, 0.0, 0.0, 0.0, 0.0);
-        // }
-        // rb.motor_send();
+        for (motor *m : rb.Motors)
+        {
+            m->fresh_cmd(0.0, 1.0, 0.0, 0.0, 1.0);
+        }
+        rb.motor_send();
         ////////////////////////recv
         for (motor *m : rb.Motors)
         {
