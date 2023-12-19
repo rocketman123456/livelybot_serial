@@ -37,6 +37,10 @@ target_link_libraries(test_motor_run ${catkin_LIBRARIES})
 
 add_executable(test_motor src/test_motor.cpp ${serial_SRCS})
 target_link_libraries(test_motor ${catkin_LIBRARIES})
+
+add_executable(test_p_sit src/test_p_sit.cpp ${serial_SRCS})
+target_link_libraries(test_p_sit ${catkin_LIBRARIES})
+
 install(TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

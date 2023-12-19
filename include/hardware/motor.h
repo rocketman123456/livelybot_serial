@@ -29,7 +29,7 @@ public:
         {
             ROS_ERROR("Faile to get params name");
         }
-        _motor_pub = n.advertise<livelybot_msg::MotorState>("/livelybot_real" + motor_name + "_controller/state", 1);
+        _motor_pub = n.advertise<livelybot_msg::MotorState>("/livelybot_real_real/" + motor_name + "_controller/state", 1);
 
         if (n.getParam("robot/CANboard/No_" + std::to_string(_CANboard_num) + "_CANboard/CANport/CANport_" + std::to_string(_CANport_num) + "/motor/motor" + std::to_string(_motor_num) + "/id", id))
         {

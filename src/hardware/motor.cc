@@ -11,7 +11,7 @@ inline T motor::float2int(float in_data, uint8_t type)
     case 2: // float torque to int32
         return (int32_t)(in_data * 100000.0);
     case 3: // float kp/kd to int32
-        return (int16_t)(in_data * 32767.0);
+        return (int16_t)(in_data * 0x7FF);
     default:
         return T();
     }
