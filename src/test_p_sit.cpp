@@ -4,7 +4,9 @@
 #include <iostream>
 #include <thread>
 #include <condition_variable>
-
+#include <moveit/robot_model_loader/robot_model_loader.h>
+#include <moveit/robot_model/robot_model.h>
+#include <moveit/robot_state/robot_state.h>
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "my_serial_port");
@@ -69,7 +71,7 @@ int main(int argc, char **argv)
             derta_hight *= -1.0;
         }
         //////calculate out the motor torque and target pos???????????
-        
+
         /////////////////////////send  // send controll data
         for (motor *m : rb.Motors)
         {
