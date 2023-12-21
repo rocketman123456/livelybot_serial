@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     // rb.test_ser_motor();
     // while (0)
     int Kp = 1.0;
-    int target_pos = 0.0
+    int target_pos = 0.0;
     while (ros::ok()) // 此用法为逐个电机发送控制指令
     {
         // ROS_INFO_STREAM("START");
