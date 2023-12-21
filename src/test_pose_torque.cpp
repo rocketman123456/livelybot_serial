@@ -24,10 +24,9 @@ int main(int argc, char **argv)
         /////////////////////////send
         //////////test1////////////
         //////////固定位置控制///////
-
         for (motor *m : rb.Motors)
         {
-            m->fresh_cmd(0.0, 0.0, 0.0, 0.0, 0.0);
+            m->fresh_cmd(0.0, 0.0, (target_pos-m->get_current_motor_state()->position)*Kp, 0.0, 0.0);
         }
         rb.motor_send();
         ////////////////////////recv
