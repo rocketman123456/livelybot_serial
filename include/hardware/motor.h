@@ -4,17 +4,19 @@
 #include <stdint.h>
 #include "ros/ros.h"
 #include "livelybot_msg/MotorState.h"
+#include "livelybot_msg/MotorCmd.h"
 #define my_2pi (6.28318530717f)
 #define my_pi (3.14159265358f)
 class motor
 {
 private:
-    int type, id, num,CANport_num, CANboard_num;
+    int type, id, num, CANport_num, CANboard_num;
     ros::NodeHandle n;
     // lively_serial *ser;
     motor_back_t data;
-    ros::Publisher _motor_pub;
+    ros::Publisher _motor_State,_motor_cmd;
     livelybot_msg::MotorState p_msg;
+    livelybot_msg::MotorCmd cmd_msg;
     std::string motor_name;
 
 public:
@@ -29,7 +31,8 @@ public:
         {
             ROS_ERROR("Faile to get params name");
         }
-        _motor_pub = n.advertise<livelybot_msg::MotorState>("/livelybot_real_real/" + motor_name + "_controller/state", 1);
+        _motor_State = n.advertise<livelybot_msg::MotorState>("/livelybot_real_real/" + motor_name + "_controller/state", 1);
+        _motor_cmd = n.advertise<livelybot_msg::MotorCmd>("/livelybot_real_real/" + motor_name + "_controller/cmd", 1);
 
         if (n.getParam("robot/CANboard/No_" + std::to_string(_CANboard_num) + "_CANboard/CANport/CANport_" + std::to_string(_CANport_num) + "/motor/motor" + std::to_string(_motor_num) + "/id", id))
         {
@@ -75,5 +78,6 @@ public:
     int get_motor_belong_canboard() { return CANboard_num; }
     cdc_acm_rx_message_t *return_cmd_p() { return &cmd; }
     motor_back_t *get_current_motor_state() { return &data; }
+    float clamp(float value, float min, float max);
 };
 #endif

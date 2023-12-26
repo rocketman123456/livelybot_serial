@@ -49,6 +49,9 @@ target_link_libraries(test_p_sit ${catkin_LIBRARIES})
 add_executable(test_torque src/test_torque.cpp ${serial_SRCS})
 target_link_libraries(test_torque ${catkin_LIBRARIES})
 
+add_executable(test_pose_torque src/test_pose_torque.cpp ${serial_SRCS})
+target_link_libraries(test_pose_torque ${catkin_LIBRARIES})
+
 install(TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
