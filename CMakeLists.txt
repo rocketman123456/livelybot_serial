@@ -7,11 +7,6 @@ find_package(catkin REQUIRED COMPONENTS
     std_msgs
     livelybot_msg  
     serial
-    moveit_msgs
-    control_msgs
-    actionlib
-    actionlib_msgs
-    moveit_ros_planning_interface
 )
 set(rt_LIBRARIES rt)
 set(pthread_LIBRARIES pthread)
@@ -25,7 +20,7 @@ catkin_package(
     LIBRARIES ${PROJECT_NAME}
     INCLUDE_DIRS include
     DEPENDS rt pthread
-    CATKIN_DEPENDS roscpp std_msgs livelybot_msg serial actionlib actionlib_msgs moveit_msgs control_msgs
+    CATKIN_DEPENDS roscpp std_msgs livelybot_msg serial
 )
 add_library(${PROJECT_NAME} ${serial_SRCS})
 target_link_libraries(${PROJECT_NAME} rt pthread)
@@ -42,15 +37,6 @@ target_link_libraries(test_motor_run ${catkin_LIBRARIES})
 
 add_executable(test_motor src/test_motor.cpp ${serial_SRCS})
 target_link_libraries(test_motor ${catkin_LIBRARIES})
-
-add_executable(test_p_sit src/test_p_sit.cpp ${serial_SRCS})
-target_link_libraries(test_p_sit ${catkin_LIBRARIES})
-
-add_executable(test_torque src/test_torque.cpp ${serial_SRCS})
-target_link_libraries(test_torque ${catkin_LIBRARIES})
-
-add_executable(test_pose_torque src/test_pose_torque.cpp ${serial_SRCS})
-target_link_libraries(test_pose_torque ${catkin_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
