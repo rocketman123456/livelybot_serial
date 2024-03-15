@@ -1,6 +1,7 @@
-#include "ros/ros.h"
-#include "../include/serial_struct.h"
-#include "../include/hardware/robot.h"
+#include "serial_struct.h"
+#include "hardware/robot.h"
+
+#include <ros/ros.h>
 #include <iostream>
 #include <thread>
 #include <condition_variable>

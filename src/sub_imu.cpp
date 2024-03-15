@@ -1,7 +1,7 @@
-#include "ros/ros.h"
+#include <ros/ros.h>
 #include <sensor_msgs/Imu.h>
 
-void doMsg(const sensor_msgs::Imu::ConstPtr &msg)
+void doMsg(const sensor_msgs::Imu::ConstPtr& msg)
 {
     double angular_velocity_x = msg->angular_velocity.x;
     double angular_velocity_y = msg->angular_velocity.y;
@@ -18,11 +18,12 @@ void doMsg(const sensor_msgs::Imu::ConstPtr &msg)
 
     std::cout << msg->header.stamp << std::endl;
 }
-int main(int argc, char **argv)
+
+int main(int argc, char** argv)
 {
     ros::init(argc, argv, "recv_imu");
-    ros::NodeHandle n;
-    ros::Subscriber sub_imu = n.subscribe<sensor_msgs::Imu>("/lvbot_imu", 1, doMsg);
+    ros::NodeHandle   n;
+    ros::Subscriber   sub_imu = n.subscribe<sensor_msgs::Imu>("/lvbot_imu", 1, doMsg);
     ros::AsyncSpinner subSpinner(1);
     subSpinner.start();
     ros::Rate r(1000);
