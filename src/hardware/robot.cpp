@@ -10,7 +10,7 @@ robot::robot()
     {
         ROS_ERROR("Faile to get params m_robot_name");
     }
-    if (!m_node.getParam("robot/CANboard_Num", CANboard_num))
+    if (!m_node.getParam("robot/CANboard_Num", m_canboard_num))
     {
         ROS_ERROR("Faile to get params CANboard_num");
     }
@@ -38,7 +38,7 @@ robot::robot()
     {
         for (size_t i = 1; i <= m_canboard_num; i++) // 一个CANboard使用两个串口
         {
-            m_canboards.push_back(canboard(i, &ser));
+            m_canboards.push_back(canboard(i, &m_serials));
         }
     }
 
@@ -46,7 +46,7 @@ robot::robot()
     {
         cb.push_CANport(&m_canports);
     }
-    for (canport* cp : m_canboards)
+    for (canport* cp : m_canports)
     {
         // std::thread(&canport::send, &cp);
         cp->puch_motor(&m_motors);

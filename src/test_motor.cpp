@@ -21,7 +21,7 @@ int main(int argc, char** argv)
     {
         for (size_t i = 0; i < 20; i++)
         {
-            rb.Motors[i]->fresh_cmd(0.0, 0.0, 0.0, 0.0, 0.01);
+            rb.m_motors[i]->fresh_cmd(0.0, 0.0, 0.0, 0.0, 0.01);
         }
         rb.motor_send();
         temp_count++;
@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 
         ROS_INFO("\033[1;32m Motor Position %f. \033[0m", pos);
 
-        for (motor* m : rb.Motors)
+        for (motor* m : rb.m_motors)
         {
             motor_back_t motor;
             motor = *m->get_current_motor_state();
