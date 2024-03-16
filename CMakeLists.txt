@@ -14,8 +14,8 @@ set(serial_SRCS
     include/hardware/robot.h
     include/hardware/motor.h
     src/lively_serial.cpp
-    src/hardware/canport.cpp
     src/hardware/canboard.cpp
+    src/hardware/canport.cpp
     src/hardware/motor.cpp
     src/hardware/robot.cpp
 )
@@ -53,4 +53,5 @@ install(TARGETS ${PROJECT_NAME}
 
 ## Install headers
 install(FILES include/hardware/robot.h include/hardware/motor.h
-    DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}/livelybot_serial)
+    DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}/livelybot_serial
+)

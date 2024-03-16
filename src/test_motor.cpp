@@ -1,10 +1,11 @@
 #include "hardware/robot.h"
 #include "serial_struct.h"
 
-#include <ros/ros.h>
 #include <condition_variable>
 #include <iostream>
+#include <ros/ros.h>
 #include <thread>
+
 
 int main(int argc, char** argv)
 {
@@ -33,10 +34,12 @@ int main(int argc, char** argv)
     float pos   = 0.0;
     int   index = 0;
 
+    motor* m = rb.m_motors[index];
+
     while (ros::ok()) // 此用法为逐个电机发送控制指令
     {
         pos = angle * sin(time);
-        rb.Motors[index]->fresh_cmd(pos, 0.0, 0.0, 0.01, 0.01);
+        m->fresh_cmd(pos, 0.0, 0.0, 0.1, 0.01);
         time += dt;
 
         rb.motor_send();
@@ -47,13 +50,13 @@ int main(int argc, char** argv)
         {
             motor_back_t motor;
             motor = *m->get_current_motor_state();
-            ROS_INFO("ID:%d pos: %8f,vel: %8f,tor: %8f", motor.ID, motor.position, motor.velocity, motor.torque);
+            // ROS_INFO("ID:%d pos: %8f,vel: %8f,tor: %8f", motor.ID, motor.position, motor.velocity, motor.torque);
         }
 
         rate.sleep();
     }
 
-    for (auto& thread : rb.ser_recv_threads)
+    for (auto& thread : rb.m_receive_threads)
     {
         thread.join();
     }
