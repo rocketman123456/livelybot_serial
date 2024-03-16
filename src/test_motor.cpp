@@ -6,7 +6,6 @@
 #include <ros/ros.h>
 #include <thread>
 
-
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "test_motor");
@@ -14,6 +13,7 @@ int main(int argc, char** argv)
     ros::Rate       rate(400);
     robot           rb;
     ROS_INFO("\033[1;32mSTART\033[0m");
+
     // ========================== singlethread send =====================
     int       temp_count = 0;
     ros::Rate temp_rate(100);
@@ -28,6 +28,7 @@ int main(int argc, char** argv)
         temp_rate.sleep();
     }
 
+    // ========================== singlethread send =====================
     float dt    = 0.001;
     float time  = 0.0;
     float angle = 0.314;

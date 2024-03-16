@@ -1,23 +1,26 @@
 #ifndef _MOTOR_H_
 #define _MOTOR_H_
 
-#include "serial_struct.h"
 #include "livelybot_msg/MotorCmd.h"
 #include "livelybot_msg/MotorState.h"
+#include "serial_struct.h"
 
 #include <ros/ros.h>
 #include <stdint.h>
 
-#define my_2pi (6.28318530717f)
-#define my_pi (3.14159265358f)
 class motor
 {
 private:
-    int             type, id, num, CANport_num, CANboard_num;
-    ros::NodeHandle n;
-    // lively_serial *ser;
+    int type;
+    int id;
+    int num;
+    int CANport_num;
+    int CANboard_num;
+
+    ros::NodeHandle           n;
     motor_back_t              data;
-    ros::Publisher            _motor_state, _motor_cmd;
+    ros::Publisher            _motor_state;
+    ros::Publisher            _motor_cmd;
     livelybot_msg::MotorState p_msg;
     livelybot_msg::MotorCmd   cmd_msg;
     std::string               motor_name;

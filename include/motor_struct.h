@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #pragma pack(1)
+
 using motor_cmd_t = struct motor_cmd_struct
 {
     uint8_t ID;
@@ -29,6 +30,7 @@ using motor_back_raw_t = struct motor_back_raw_struct
     int32_t velocity;
     int32_t torque;
 };
+
 #pragma pack()
 
 #endif

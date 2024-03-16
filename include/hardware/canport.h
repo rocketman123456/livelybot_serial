@@ -4,11 +4,9 @@
 #include "hardware/motor.h"
 #include "lively_serial.h"
 
-
 #include <condition_variable>
 #include <ros/ros.h>
 #include <thread>
-
 
 class canport
 {
