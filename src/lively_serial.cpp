@@ -8,8 +8,8 @@ lively_serial::lively_serial(std::string* port, uint32_t baudrate, uint8_t debug
     recv_flag = false;
     m_serial.setPort(*m_port); // 设置打开的串口名称
     m_serial.setBaudrate(m_baudrate);
-    serial::Timeout to = serial::Timeout::simpleTimeout(1000); // 创建timeout
-    m_serial.setTimeout(to);                                   // 设置串口的timeout
+    serial::Timeout timeout = serial::Timeout::simpleTimeout(1000); // 创建timeout
+    m_serial.setTimeout(timeout);                                   // 设置串口的timeout
     // 打开串口
     try
     {
@@ -57,7 +57,7 @@ void lively_serial::recv()
                     it->second->fresh_data(cdc_acm_tx_message.motor_back_raw.position,
                                            cdc_acm_tx_message.motor_back_raw.velocity,
                                            cdc_acm_tx_message.motor_back_raw.torque);
-                    ROS_INFO("END");
+                    // ROS_INFO("END");
                 }
                 else
                 {
@@ -149,7 +149,7 @@ void lively_serial::send(cdc_acm_rx_message_t* _cdc_acm_rx_message)
     m_serial.write((const uint8_t*)_cdc_acm_rx_message, sizeof(cdc_acm_rx_message_t));
 }
 
-void lively_serial::init_map_motor(std::map<int, motor*>* _Map_Motors_p)
+void lively_serial::init_map_motor(std::map<int, Motor*>* _Map_Motors_p)
 {
     Map_Motors_p = *_Map_Motors_p;
     rate         = new ros::Rate(Map_Motors_p.size() * 1100);

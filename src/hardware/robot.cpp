@@ -1,6 +1,6 @@
 #include "hardware/robot.h"
 
-robot::robot()
+Robot::Robot()
 {
     if (!m_node.getParam("robot/Seial_Baudrate", m_seial_baudrate))
     {
@@ -38,15 +38,15 @@ robot::robot()
     {
         for (size_t i = 1; i <= m_canboard_num; i++) // 一个CANboard使用两个串口
         {
-            m_canboards.push_back(canboard(i, &m_serials));
+            m_canboards.push_back(CANBoard(i, &m_serials));
         }
     }
 
-    for (canboard& cb : m_canboards)
+    for (CANBoard& cb : m_canboards)
     {
-        cb.push_CANport(&m_canports);
+        cb.push_canport(&m_canports);
     }
-    for (canport* cp : m_canports)
+    for (CANPort* cp : m_canports)
     {
         // std::thread(&canport::send, &cp);
         cp->puch_motor(&m_motors);
@@ -55,15 +55,15 @@ robot::robot()
     ROS_INFO("\033[1;32mThe robot has %ld motors\033[0m", m_motors.size());
 }
 
-void robot::motor_send()
+void Robot::motor_send()
 {
-    for (canboard& cb : m_canboards)
+    for (CANBoard& cb : m_canboards)
     {
         cb.motor_send();
     }
 }
 
-void robot::init_ser()
+void Robot::init_ser()
 {
     for (size_t i = 0; i < 4; i++)
     {
@@ -72,6 +72,7 @@ void robot::init_ser()
 
     for (size_t i = 0; i < m_serial_ids.size(); i++)
     {
+        std::cout << m_serial_ids[i] << std::endl;
         // lively_serial *s = new lively_serial(&str[i], 2000000, 1);
         lively_serial* s = new lively_serial(&m_serial_ids[i], m_seial_baudrate, 1);
         m_serials.push_back(s);
@@ -79,7 +80,7 @@ void robot::init_ser()
     }
 }
 
-void robot::test_ser_motor()
+void Robot::test_ser_motor()
 {
     for (lively_serial* s : m_serials)
     {

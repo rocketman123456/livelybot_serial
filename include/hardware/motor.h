@@ -8,7 +8,7 @@
 #include <ros/ros.h>
 #include <stdint.h>
 
-class motor
+class Motor
 {
 private:
     int type;
@@ -28,8 +28,8 @@ private:
 public:
     cdc_acm_rx_message_t cmd;
 
-    motor(int _motor_num, int _CANport_num, int _CANboard_num);
-    ~motor() = default;
+    Motor(int motor_num, int canport_num, int canboard_num);
+    ~Motor() = default;
 
     template<typename T>
     inline T     float2int(float in_data, uint8_t type);

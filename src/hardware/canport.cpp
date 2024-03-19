@@ -1,6 +1,6 @@
 #include "hardware/canport.h"
 
-canport::canport(int _CANport_num, int _CANboard_num, lively_serial* _ser) : ser(_ser)
+CANPort::CANPort(int _CANport_num, int _CANboard_num, lively_serial* _ser) : ser(_ser)
 {
     canboard_id = _CANboard_num;
     canport_id  = _CANport_num;
@@ -16,11 +16,11 @@ canport::canport(int _CANport_num, int _CANboard_num, lively_serial* _ser) : ser
     }
     for (size_t i = 1; i <= motor_num; i++)
     {
-        Motors.push_back(new motor(i, _CANport_num, _CANboard_num));
+        Motors.push_back(new Motor(i, _CANport_num, _CANboard_num));
     }
-    for (motor* m : Motors)
+    for (Motor* m : Motors)
     {
-        Map_Motors_p.insert(std::pair<int, motor*>(m->get_motor_id(), m));
+        Map_Motors_p.insert(std::pair<int, Motor*>(m->get_motor_id(), m));
     }
     ser->init_map_motor(&Map_Motors_p);
     // ser->test_ser_motor();
@@ -28,7 +28,7 @@ canport::canport(int _CANport_num, int _CANboard_num, lively_serial* _ser) : ser
     // std::thread(&canport::send, this);
 }
 
-canport::~canport()
+CANPort::~CANPort()
 {
     // for (motor_back_t* m:Motor_data)
     // {
@@ -36,24 +36,24 @@ canport::~canport()
     // }
 }
 
-void canport::puch_motor(std::vector<motor*>* _Motors)
+void CANPort::puch_motor(std::vector<Motor*>* _Motors)
 {
-    for (motor* m : Motors)
+    for (Motor* m : Motors)
     {
         _Motors->push_back(m);
     }
 }
 
-void canport::push_motor_data()
+void CANPort::push_motor_data()
 {
     for (motor_back_t* r : Motor_data)
     {
     }
 }
 
-void canport::motor_send()
+void CANPort::motor_send()
 {
-    for (motor* m : Motors)
+    for (Motor* m : Motors)
     {
         ser->send(m->return_cmd_p());
         // ROS_INFO("CRC: 0x%x", m->cmd.crc16);

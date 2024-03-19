@@ -24,8 +24,8 @@ private:
     cdc_acm_rx_message_t cdc_acm_rx_message; // 串口收到的信息，来自于PC，用于控制Motor
 
     std::vector<motor_back_t*> Motor_data;
-    std::vector<motor*>        Motors;
-    std::map<int, motor*>      Map_Motors_p;
+    std::vector<Motor*>        Motors;
+    std::map<int, Motor*>      Map_Motors_p;
 
     ros::Rate* rate;
     int*       id;
@@ -43,7 +43,7 @@ public:
 
     void recv();
 
-    void init_map_motor(std::map<int, motor*>* _Map_Motors_p);
+    void init_map_motor(std::map<int, Motor*>* _Map_Motors_p);
     void test_ser_motor();
 };
 

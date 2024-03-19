@@ -3,7 +3,7 @@
 #define my_2pi (6.28318530717f)
 #define my_pi (3.14159265358f)
 
-motor::motor(int _motor_num, int _CANport_num, int _CANboard_num) :
+Motor::Motor(int _motor_num, int _CANport_num, int _CANboard_num) :
     CANport_num(_CANport_num), CANboard_num(_CANboard_num)
 {
     if (!n.getParam("robot/CANboard/No_" + std::to_string(_CANboard_num) + "_CANboard/CANport/CANport_" +
@@ -47,7 +47,7 @@ motor::motor(int _motor_num, int _CANport_num, int _CANboard_num) :
 }
 
 template<typename T>
-inline T motor::float2int(float in_data, uint8_t type)
+inline T Motor::float2int(float in_data, uint8_t type)
 {
     switch (type)
     {
@@ -64,7 +64,7 @@ inline T motor::float2int(float in_data, uint8_t type)
     }
 }
 
-inline float motor::int2float(int32_t in_data, uint8_t type)
+inline float Motor::int2float(int32_t in_data, uint8_t type)
 {
     switch (type)
     {
@@ -79,13 +79,13 @@ inline float motor::int2float(int32_t in_data, uint8_t type)
     }
 }
 
-float motor::clamp(float value, float min, float max) { return std::max(min, std::min(max, value)); }
+float Motor::clamp(float value, float min, float max) { return std::max(min, std::min(max, value)); }
 
 /*
     velocity:
     torque: -4.0~4.0
 */
-void motor::fresh_cmd(float position, float velocity, float torque, float Kp, float Kd)
+void Motor::fresh_cmd(float position, float velocity, float torque, float Kp, float Kd)
 {
     cmd.motor_cmd.position = float2int<int32_t>(position, 1);
     cmd.motor_cmd.velocity = float2int<int32_t>(velocity, 1);
@@ -102,7 +102,7 @@ void motor::fresh_cmd(float position, float velocity, float torque, float Kp, fl
     _motor_cmd.publish(cmd_msg);
 }
 
-void motor::fresh_data(int32_t position, int32_t velocity, int32_t torque)
+void Motor::fresh_data(int32_t position, int32_t velocity, int32_t torque)
 {
     p_msg.pos = data.position = int2float(position, 1);
     p_msg.vel = data.velocity = int2float(velocity, 1);

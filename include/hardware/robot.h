@@ -6,7 +6,7 @@
 #include <iostream>
 #include <thread>
 
-class robot
+class Robot
 {
 private:
     std::string m_robot_name;
@@ -21,18 +21,18 @@ private:
     int m_seial_baudrate;
 
     ros::NodeHandle             m_node;
-    std::vector<canboard>       m_canboards;
+    std::vector<CANBoard>       m_canboards;
     std::vector<std::string>    m_serial_ids;
     std::vector<lively_serial*> m_serials;
 
 public:
-    std::vector<motor*>      m_motors;
-    std::vector<canport*>    m_canports;
+    std::vector<Motor*>      m_motors;
+    std::vector<CANPort*>    m_canports;
     std::vector<std::thread> m_receive_threads;
     std::vector<std::thread> m_send_threads;
 
-    robot();
-    ~robot() = default;
+    Robot();
+    ~Robot() = default;
 
     void motor_send();
     void init_ser();

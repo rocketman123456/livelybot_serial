@@ -8,24 +8,24 @@
 #include <ros/ros.h>
 #include <thread>
 
-class canport
+class CANPort
 {
 private:
     int                        motor_num;
     int                        CANport_num;
     ros::NodeHandle            n;
-    std::vector<motor*>        Motors;
-    std::map<int, motor*>      Map_Motors_p;
+    std::vector<Motor*>        Motors;
+    std::map<int, Motor*>      Map_Motors_p;
     bool                       sendEnabled;
     int                        canboard_id, canport_id;
     std::vector<motor_back_t*> Motor_data;
     lively_serial*             ser;
 
 public:
-    canport(int _CANport_num, int _CANboard_num, lively_serial* _ser);
-    ~canport();
+    CANPort(int canport_num, int canboard_num, lively_serial* _ser);
+    ~CANPort();
 
-    void puch_motor(std::vector<motor*>* _Motors);
+    void puch_motor(std::vector<Motor*>* _Motors);
     void push_motor_data();
     void motor_send();
 
