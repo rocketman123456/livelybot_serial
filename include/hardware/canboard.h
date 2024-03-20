@@ -6,22 +6,21 @@
 #include <iostream>
 #include <ros/ros.h>
 #include <vector>
+#include <memory>
 
 class CANBoard
 {
 private:
     int                   m_canport_num;
-    ros::NodeHandle       n;
-    std::vector<CANPort*> m_canport;
-    // std::vector<motor> motor;
-    // std::vector<std::shared_ptr<canport>> CANport;
+    ros::NodeHandle       m_node;
+    std::vector<std::shared_ptr<CANPort>> m_canport;
 
 public:
-    CANBoard(int canboard_ID, std::vector<lively_serial*>* ser);
-    ~CANBoard() = default;
+    CANBoard(int canboard_ID, std::vector<std::shared_ptr<lively_serial>>& serials);
+    ~CANBoard();
 
     int  get_canport_num();
-    void push_canport(std::vector<CANPort*>* canport);
+    void push_canport(std::vector<std::shared_ptr<CANPort>>& canport);
     void motor_send();
 };
 #endif

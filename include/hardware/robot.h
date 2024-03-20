@@ -2,8 +2,10 @@
 #define _ROBOT_H_
 #include "canboard.h"
 
-#include <ros/ros.h>
 #include <iostream>
+#include <memory>
+#include <ros/ros.h>
+#include <string>
 #include <thread>
 
 class Robot
@@ -20,14 +22,15 @@ private:
     int m_canboard_num;
     int m_seial_baudrate;
 
-    ros::NodeHandle             m_node;
-    std::vector<CANBoard>       m_canboards;
-    std::vector<std::string>    m_serial_ids;
-    std::vector<lively_serial*> m_serials;
+    ros::NodeHandle m_node;
 
 public:
-    std::vector<Motor*>      m_motors;
-    std::vector<CANPort*>    m_canports;
+    std::vector<std::string>                    m_serial_ids;
+    std::vector<std::shared_ptr<lively_serial>> m_serials;
+    std::vector<std::shared_ptr<CANPort>>       m_canports;
+    std::vector<std::shared_ptr<CANBoard>>      m_canboards;
+    std::vector<std::shared_ptr<Motor>>         m_motors;
+
     std::vector<std::thread> m_receive_threads;
     std::vector<std::thread> m_send_threads;
 
@@ -36,6 +39,5 @@ public:
 
     void motor_send();
     void init_ser();
-    void test_ser_motor();
 };
 #endif

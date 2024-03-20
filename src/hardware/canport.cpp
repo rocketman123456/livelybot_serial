@@ -1,61 +1,52 @@
 #include "hardware/canport.h"
+#include <memory>
 
-CANPort::CANPort(int _CANport_num, int _CANboard_num, lively_serial* _ser) : ser(_ser)
+CANPort::CANPort(int canport_num, int canboard_num, std::shared_ptr<lively_serial> serial) : m_serial(serial)
 {
-    canboard_id = _CANboard_num;
-    canport_id  = _CANport_num;
-    if (n.getParam("robot/CANboard/No_" + std::to_string(_CANboard_num) + "_CANboard/CANport/CANport_" +
-                       std::to_string(_CANport_num) + "/motor_num",
-                   motor_num))
-    {
-        // ROS_INFO("Got params motor_num: %d",motor_num);
-    }
-    else
+    m_canboard_id = canboard_num;
+    m_canport_id  = canport_num;
+
+    if (m_node.getParam("robot/CANboard/No_" + std::to_string(m_canboard_id) + "_CANboard/CANport/CANport_" +
+                            std::to_string(m_canport_id) + "/motor_num",
+                        m_motor_num))
     {
         ROS_ERROR("Faile to get params motor_num");
     }
-    for (size_t i = 1; i <= motor_num; i++)
+
+    for (size_t i = 1; i <= m_motor_num; i++)
     {
-        Motors.push_back(new Motor(i, _CANport_num, _CANboard_num));
+        auto motor = std::make_shared<Motor>(i, m_canport_id, m_canboard_id);
+        m_motors.push_back(motor);
     }
-    for (Motor* m : Motors)
+
+    for (auto motor : m_motors)
     {
-        Map_Motors_p.insert(std::pair<int, Motor*>(m->get_motor_id(), m));
+        m_motor_map.insert(std::pair<int, std::shared_ptr<Motor>>(motor->get_motor_id(), motor));
     }
-    ser->init_map_motor(&Map_Motors_p);
-    // ser->test_ser_motor();
-    sendEnabled = false;
+
+    m_serial->init_map_motor(m_motor_map);
+    m_send_enabled = false;
     // std::thread(&canport::send, this);
 }
 
 CANPort::~CANPort()
 {
-    // for (motor_back_t* m:Motor_data)
-    // {
-    //     delete m;
-    // }
+    m_motors.clear();
+    m_motor_map.clear();
 }
 
-void CANPort::puch_motor(std::vector<Motor*>* _Motors)
+void CANPort::puch_motor(std::vector<std::shared_ptr<Motor>>& motors)
 {
-    for (Motor* m : Motors)
+    for (auto& m : m_motors)
     {
-        _Motors->push_back(m);
-    }
-}
-
-void CANPort::push_motor_data()
-{
-    for (motor_back_t* r : Motor_data)
-    {
+        motors.push_back(m);
     }
 }
 
 void CANPort::motor_send()
 {
-    for (Motor* m : Motors)
+    for (auto m : m_motors)
     {
-        ser->send(m->return_cmd_p());
-        // ROS_INFO("CRC: 0x%x", m->cmd.crc16);
+        m_serial->send(m->return_cmd_p());
     }
 }

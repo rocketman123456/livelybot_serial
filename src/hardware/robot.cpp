@@ -1,4 +1,5 @@
 #include "hardware/robot.h"
+#include <memory>
 
 Robot::Robot()
 {
@@ -38,28 +39,29 @@ Robot::Robot()
     {
         for (size_t i = 1; i <= m_canboard_num; i++) // 一个CANboard使用两个串口
         {
-            m_canboards.push_back(CANBoard(i, &m_serials));
+            auto board = std::make_shared<CANBoard>(i, m_serials);
+            m_canboards.push_back(board);
         }
     }
 
-    for (CANBoard& cb : m_canboards)
+    for (auto cb : m_canboards)
     {
-        cb.push_canport(&m_canports);
-    }
-    for (CANPort* cp : m_canports)
-    {
-        // std::thread(&canport::send, &cp);
-        cp->puch_motor(&m_motors);
+        cb->push_canport(m_canports);
     }
 
-    ROS_INFO("\033[1;32mThe robot has %ld motors\033[0m", m_motors.size());
+    for (auto cp : m_canports)
+    {
+        cp->puch_motor(m_motors);
+    }
+
+    ROS_INFO("\033[1;32m The robot has %ld motors \033[0m", m_motors.size());
 }
 
 void Robot::motor_send()
 {
-    for (CANBoard& cb : m_canboards)
+    for (auto cb : m_canboards)
     {
-        cb.motor_send();
+        cb->motor_send();
     }
 }
 
@@ -74,16 +76,8 @@ void Robot::init_ser()
     {
         std::cout << m_serial_ids[i] << std::endl;
         // lively_serial *s = new lively_serial(&str[i], 2000000, 1);
-        lively_serial* s = new lively_serial(&m_serial_ids[i], m_seial_baudrate, 1);
-        m_serials.push_back(s);
-        m_receive_threads.push_back(std::thread(&lively_serial::recv, s));
-    }
-}
-
-void Robot::test_ser_motor()
-{
-    for (lively_serial* s : m_serials)
-    {
-        s->test_ser_motor();
+        auto serial = std::make_shared<lively_serial>(m_serial_ids[i], m_seial_baudrate, 1);
+        m_serials.push_back(serial);
+        m_receive_threads.push_back(std::thread(&lively_serial::recv, serial));
     }
 }

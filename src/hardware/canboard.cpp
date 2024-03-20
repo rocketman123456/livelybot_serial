@@ -1,32 +1,35 @@
 #include "hardware/canboard.h"
 
-CANBoard::CANBoard(int canboard_ID, std::vector<lively_serial*>* ser)
+CANBoard::CANBoard(int canboard_ID, std::vector<std::shared_ptr<lively_serial>>& serial)
 {
-    if (!n.getParam("robot/CANboard/No_" + std::to_string(canboard_ID) + "_CANboard/CANport_num", m_canport_num))
+    if (!m_node.getParam("robot/CANboard/No_" + std::to_string(canboard_ID) + "_CANboard/CANport_num", m_canport_num))
     {
         ROS_ERROR("Faile to get params CANport_num");
     }
 
     for (size_t j = 1; j <= m_canport_num; j++) // 一个串口对应一个CANport
     {
-        m_canport.push_back(new CANPort(j, canboard_ID, (*ser)[(canboard_ID - 1) * m_canport_num + j - 1]));
+        auto port = std::make_shared<CANPort>(j, canboard_ID, serial[(canboard_ID - 1) * m_canport_num + j - 1]);
+        m_canport.push_back(port);
     }
 }
 
+CANBoard::~CANBoard() { m_canport.clear(); }
+
 int CANBoard::get_canport_num() { return m_canport_num; }
 
-void CANBoard::push_canport(std::vector<CANPort*>* _CANport)
+void CANBoard::push_canport(std::vector<std::shared_ptr<CANPort>>& canport)
 {
-    for (CANPort* c : m_canport)
+    for (auto& port : m_canport)
     {
-        _CANport->push_back(c);
+        canport.push_back(port);
     }
 }
 
 void CANBoard::motor_send()
 {
-    for (CANPort* c : m_canport)
+    for (auto& port : m_canport)
     {
-        c->motor_send();
+        port->motor_send();
     }
 }

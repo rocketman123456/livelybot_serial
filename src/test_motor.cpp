@@ -23,11 +23,11 @@ int main(int argc, char** argv)
     // ========================== singlethread send =====================
     float dt    = 0.01;
     float time  = 0.0;
-    float angle = 0.314;
+    float angle = 10.0;
     float pos   = 0.0;
-    int   index = 0;
+    int   index = 19;
 
-    Motor* m = robot.m_motors[index];
+    auto m = robot.m_motors[index];
 
     while (ros::ok()) // 此用法为逐个电机发送控制指令
     {
@@ -45,10 +45,10 @@ int main(int argc, char** argv)
 
         ROS_INFO("\033[1;32m Motor Position %f. \033[0m", pos);
 
-        for (Motor* m : robot.m_motors)
+        for (auto m : robot.m_motors)
         {
             motor_back_t motor;
-            motor = *m->get_current_motor_state();
+            motor = *(m->get_current_motor_state());
             // ROS_INFO("ID:%d pos: %8f,vel: %8f,tor: %8f", motor.ID, motor.position, motor.velocity, motor.torque);
         }
 
