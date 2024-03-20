@@ -6,7 +6,7 @@ CANPort::CANPort(int canport_num, int canboard_num, std::shared_ptr<lively_seria
     m_canboard_id = canboard_num;
     m_canport_id  = canport_num;
 
-    if (m_node.getParam("robot/CANboard/No_" + std::to_string(m_canboard_id) + "_CANboard/CANport/CANport_" +
+    if (!m_node.getParam("robot/CANboard/No_" + std::to_string(m_canboard_id) + "_CANboard/CANport/CANport_" +
                             std::to_string(m_canport_id) + "/motor_num",
                         m_motor_num))
     {
