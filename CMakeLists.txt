@@ -8,21 +8,20 @@ find_package(catkin REQUIRED COMPONENTS
     livelybot_msg  
     serial
 )
+
+include_directories(
+    include
+    ${catkin_INCLUDE_DIRS}
+)
+
 set(rt_LIBRARIES rt)
 set(pthread_LIBRARIES pthread)
 set(serial_SRCS
-    include/hardware/robot.h
-    include/hardware/motor.h
     src/lively_serial.cpp
     src/hardware/canboard.cpp
     src/hardware/canport.cpp
     src/hardware/motor.cpp
     src/hardware/robot.cpp
-)
-
-include_directories(
-    include
-    ${catkin_INCLUDE_DIRS}
 )
 
 catkin_package(

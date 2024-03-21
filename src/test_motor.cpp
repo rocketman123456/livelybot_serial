@@ -34,11 +34,6 @@ int main(int argc, char** argv)
         pos = angle * sin(time);
         m->fresh_cmd(pos, 0.0, 0.0, 10.0, 0.01);
 
-        // for (size_t i = 0; i < 20; i++)
-        // {
-        //     rb.m_motors[i]->fresh_cmd(0.0, 0.0, 0.0, 10.0, 0.01);
-        // }
-
         time += dt;
 
         robot.motor_send();
