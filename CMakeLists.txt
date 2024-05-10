@@ -29,8 +29,8 @@ set(serial_SRCS
 )
 
 catkin_package(
-    LIBRARIES ${PROJECT_NAME}
     INCLUDE_DIRS include
+    LIBRARIES ${PROJECT_NAME}
     DEPENDS rt pthread
     CATKIN_DEPENDS roscpp std_msgs livelybot_msg serial
 )

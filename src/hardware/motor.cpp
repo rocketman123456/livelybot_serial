@@ -44,6 +44,8 @@ Motor::Motor(int motor_num, int canport_num, int canboard_num)
         ROS_ERROR("Faile to get params num");
     }
 
+    std::cout << "motor_name" << m_motor_name << std::endl;
+
     m_motor_state =
         m_node.advertise<livelybot_msg::MotorState>("/livelybot_real_real/" + m_motor_name + "_controller/state", 1);
     m_motor_cmd =
