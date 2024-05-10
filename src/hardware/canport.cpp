@@ -19,11 +19,11 @@ CANPort::CANPort(int canport_num, int canboard_num, std::shared_ptr<lively_seria
     {
         ROS_ERROR("Faile to get params motor_num");
     }
-    std::cout << "motor_num" << m_motor_num << std::endl;
+    std::cout << "motor_num " << m_motor_num << std::endl;
 
     for (size_t i = 1; i <= m_motor_num; i++)
     {
-        std::cout << "motor_id" << i << std::endl;
+        std::cout << "motor_id " << i << std::endl;
         auto motor = std::make_shared<Motor>(i, m_canport_id, m_canboard_id);
         m_motors.push_back(motor);
     }

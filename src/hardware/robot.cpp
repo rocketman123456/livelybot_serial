@@ -74,7 +74,7 @@ void RobotDriver::init_serial()
 
     for (auto& m_serial_id : m_serial_ids)
     {
-        std::cout << m_serial_id << std::endl;
+        std::cout << "serial_id " << m_serial_id << std::endl;
         // lively_serial *s = new lively_serial(&str[i], 2000000, 1);
         auto serial = std::make_shared<lively_serial>(m_serial_id, m_seial_baudrate, 1);
         m_serials.push_back(serial);

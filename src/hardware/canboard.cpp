@@ -11,7 +11,7 @@ CANBoard::CANBoard(int canboard_ID, std::vector<std::shared_ptr<lively_serial>>&
 
     for (size_t j = 1; j <= m_canport_num; j++) // 一个串口对应一个CANport
     {
-        std::cout << "canport_num" << j << std::endl;
+        std::cout << "canport_num " << j << std::endl;
         auto port = std::make_shared<CANPort>(j, canboard_ID, serial[(canboard_ID - 1) * m_canport_num + j - 1]);
         m_canport.push_back(port);
     }
