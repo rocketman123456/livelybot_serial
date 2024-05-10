@@ -1,13 +1,11 @@
-#ifndef _CANPORT_H_
-#define _CANPORT_H_
+#pragma once
 
 #include "hardware/motor.h"
 #include "lively_serial.h"
 
-#include <condition_variable>
-#include <memory>
 #include <ros/ros.h>
-#include <thread>
+
+#include <memory>
 
 class CANPort
 {
@@ -36,4 +34,3 @@ public:
     int get_canboard_id() { return m_canboard_id; }
     int get_canport_id() { return m_canport_id; }
 };
-#endif

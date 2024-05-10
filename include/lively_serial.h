@@ -1,12 +1,12 @@
-#ifndef _LIVELYm_serialIAL_H_
-#define _LIVELYm_serialIAL_H_
+#pragma once
 
 #include "hardware/motor.h"
 #include "serial_struct.h"
 
+#include <memory>
 #include <ros/ros.h>
 #include <serial/serial.h>
-#include <memory>
+
 
 class lively_serial
 {
@@ -26,7 +26,7 @@ private:
 
     std::map<int, std::shared_ptr<Motor>> m_motor_map;
 
-    ros::Rate* m_rate;
+    // ros::Rate* m_rate;
 
 public:
     lively_serial(const std::string& port, uint32_t baudrate, uint8_t debug_level);
@@ -42,5 +42,3 @@ public:
 
     void init_map_motor(const std::map<int, std::shared_ptr<Motor>>& motor_map);
 };
-
-#endif

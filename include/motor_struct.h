@@ -1,5 +1,4 @@
-#ifndef _MOTOR_STRUCT_H_
-#define _MOTOR_STRUCT_H_
+#pragma once
 
 #include <stdint.h>
 
@@ -32,5 +31,3 @@ using motor_back_raw_t = struct motor_back_raw_struct
 };
 
 #pragma pack()
-
-#endif

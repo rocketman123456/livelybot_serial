@@ -1,14 +1,14 @@
-#ifndef _ROBOT_H_
-#define _ROBOT_H_
-#include "canboard.h"
+#pragma once
 
-#include <iostream>
-#include <memory>
+#include "hardware/canboard.h"
+
 #include <ros/ros.h>
+
+#include <memory>
 #include <string>
 #include <thread>
 
-class Robot
+class RobotDriver
 {
 private:
     std::string m_robot_name;
@@ -34,10 +34,9 @@ public:
     std::vector<std::thread> m_receive_threads;
     std::vector<std::thread> m_send_threads;
 
-    Robot();
-    ~Robot() = default;
+    RobotDriver();
+    ~RobotDriver() = default;
 
     void motor_send();
-    void init_ser();
+    void init_serial();
 };
-#endif

@@ -14,8 +14,6 @@ CANBoard::CANBoard(int canboard_ID, std::vector<std::shared_ptr<lively_serial>>&
     }
 }
 
-CANBoard::~CANBoard() { m_canport.clear(); }
-
 int CANBoard::get_canport_num() { return m_canport_num; }
 
 void CANBoard::push_canport(std::vector<std::shared_ptr<CANPort>>& canport)

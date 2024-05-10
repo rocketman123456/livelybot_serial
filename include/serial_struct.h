@@ -1,7 +1,5 @@
-#ifndef _SERIAL_STRUCT_H_
-#define _SERIAL_STRUCT_H_
+#pragma once
 
-#include "crc/crc16.h"
 #include "motor_struct.h"
 
 #include <stdint.h>
@@ -24,6 +22,3 @@ using cdc_acm_rx_message_t = struct cdc_acm_rx_message_struct
 };
 
 #pragma pack()
-/* class*/
-
-#endif

@@ -1,14 +1,17 @@
 #include "hardware/canport.h"
 #include <memory>
 
-CANPort::CANPort(int canport_num, int canboard_num, std::shared_ptr<lively_serial> serial) : m_serial(serial)
+CANPort::CANPort(int canport_num, int canboard_num, std::shared_ptr<lively_serial> serial)
+    : m_serial(serial)
 {
     m_canboard_id = canboard_num;
     m_canport_id  = canport_num;
 
-    if (!m_node.getParam("robot/CANboard/No_" + std::to_string(m_canboard_id) + "_CANboard/CANport/CANport_" +
-                            std::to_string(m_canport_id) + "/motor_num",
-                        m_motor_num))
+    if (!m_node.getParam(
+            "robot/CANboard/No_" + std::to_string(m_canboard_id) + "_CANboard/CANport/CANport_" +
+                std::to_string(m_canport_id) + "/motor_num",
+            m_motor_num
+        ))
     {
         ROS_ERROR("Faile to get params motor_num");
     }
@@ -19,7 +22,7 @@ CANPort::CANPort(int canport_num, int canboard_num, std::shared_ptr<lively_seria
         m_motors.push_back(motor);
     }
 
-    for (auto motor : m_motors)
+    for (auto& motor : m_motors)
     {
         m_motor_map.insert(std::pair<int, std::shared_ptr<Motor>>(motor->get_motor_id(), motor));
     }

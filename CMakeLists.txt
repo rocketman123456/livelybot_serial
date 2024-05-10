@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(livelybot_serial)
 
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Find catkin
 find_package(catkin REQUIRED COMPONENTS
     roscpp
@@ -33,13 +37,6 @@ catkin_package(
 
 add_library(${PROJECT_NAME} ${serial_SRCS})
 target_link_libraries(${PROJECT_NAME} rt pthread)
-
-# test
-# add_executable(lvbot_test src/serial_t.cpp ${serial_SRCS})
-# target_link_libraries(lvbot_test ${catkin_LIBRARIES})
-
-# add_executable(test_motor_run src/test_motor_run.cpp ${serial_SRCS})
-# target_link_libraries(test_motor_run ${catkin_LIBRARIES})
 
 add_executable(test_motor src/test_motor.cpp ${serial_SRCS})
 target_link_libraries(test_motor ${catkin_LIBRARIES})

@@ -1,7 +1,10 @@
 #include "lively_serial.h"
+#include "crc/crc16.h"
 
-lively_serial::lively_serial(const std::string& port, uint32_t baudrate, uint8_t debug_level) :
-    m_port(port), m_baudrate(baudrate), m_debug_level(debug_level)
+lively_serial::lively_serial(const std::string& port, uint32_t baudrate, uint8_t debug_level)
+    : m_port(port)
+    , m_baudrate(baudrate)
+    , m_debug_level(debug_level)
 {
     m_serial.setPort(m_port); // 设置打开的串口名称
     m_serial.setBaudrate(m_baudrate);
@@ -58,9 +61,11 @@ void lively_serial::recv()
                 auto it = m_motor_map.find(m_tx_message.motor_back_raw.ID);
                 if (it != m_motor_map.end())
                 {
-                    it->second->fresh_data(m_tx_message.motor_back_raw.position,
-                                           m_tx_message.motor_back_raw.velocity,
-                                           m_tx_message.motor_back_raw.torque);
+                    it->second->fresh_data(
+                        m_tx_message.motor_back_raw.position,
+                        m_tx_message.motor_back_raw.velocity,
+                        m_tx_message.motor_back_raw.torque
+                    );
                 }
                 else
                 {
@@ -100,7 +105,7 @@ void lively_serial::send(cdc_acm_rx_message_t* rx_message)
 void lively_serial::init_map_motor(const std::map<int, std::shared_ptr<Motor>>& motor_map)
 {
     m_motor_map = motor_map;
-    m_rate      = new ros::Rate(m_motor_map.size() * 1100);
+    // m_rate      = new ros::Rate(m_motor_map.size() * 1100);
 }
 
 // void lively_serial::test_ser_motor()

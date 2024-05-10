@@ -1,35 +1,45 @@
 #include "hardware/motor.h"
+#include "crc/crc16.h"
 
-#define my_2pi (6.28318530717f)
-#define my_pi (3.14159265358f)
+// #define my_2pi (6.28318530717f)
+// #define my_pi (3.14159265358f)
 
-Motor::Motor(int motor_num, int canport_num, int canboard_num) :
-    m_canport_num(canport_num), m_canboard_num(canboard_num)
+Motor::Motor(int motor_num, int canport_num, int canboard_num)
+    : m_canport_num(canport_num)
+    , m_canboard_num(canboard_num)
 {
-    if (!m_node.getParam("robot/CANboard/No_" + std::to_string(canboard_num) + "_CANboard/CANport/CANport_" +
-                             std::to_string(canport_num) + "/motor/motor" + std::to_string(motor_num) + "/name",
-                         m_motor_name))
+    if (!m_node.getParam(
+            "robot/CANboard/No_" + std::to_string(canboard_num) + "_CANboard/CANport/CANport_" +
+                std::to_string(canport_num) + "/motor/motor" + std::to_string(motor_num) + "/name",
+            m_motor_name
+        ))
     {
         ROS_ERROR("Faile to get params name");
     }
 
-    if (!m_node.getParam("robot/CANboard/No_" + std::to_string(canboard_num) + "_CANboard/CANport/CANport_" +
-                             std::to_string(canport_num) + "/motor/motor" + std::to_string(motor_num) + "/id",
-                         m_id))
+    if (!m_node.getParam(
+            "robot/CANboard/No_" + std::to_string(canboard_num) + "_CANboard/CANport/CANport_" +
+                std::to_string(canport_num) + "/motor/motor" + std::to_string(motor_num) + "/id",
+            m_id
+        ))
     {
         ROS_ERROR("Faile to get params id");
     }
 
-    if (!m_node.getParam("robot/CANboard/No_" + std::to_string(canboard_num) + "_CANboard/CANport/CANport_" +
-                             std::to_string(canport_num) + "/motor/motor" + std::to_string(motor_num) + "/type",
-                         m_type))
+    if (!m_node.getParam(
+            "robot/CANboard/No_" + std::to_string(canboard_num) + "_CANboard/CANport/CANport_" +
+                std::to_string(canport_num) + "/motor/motor" + std::to_string(motor_num) + "/type",
+            m_type
+        ))
     {
         ROS_ERROR("Faile to get params type");
     }
 
-    if (!m_node.getParam("robot/CANboard/No_" + std::to_string(canboard_num) + "_CANboard/CANport/CANport_" +
-                             std::to_string(canport_num) + "/motor/motor" + std::to_string(motor_num) + "/num",
-                         m_num))
+    if (!m_node.getParam(
+            "robot/CANboard/No_" + std::to_string(canboard_num) + "_CANboard/CANport/CANport_" +
+                std::to_string(canport_num) + "/motor/motor" + std::to_string(motor_num) + "/num",
+            m_num
+        ))
     {
         ROS_ERROR("Faile to get params num");
     }
@@ -54,7 +64,7 @@ inline T Motor::float2int(float in_data, uint8_t type)
     switch (type)
     {
         case 0: // radian float pos/vel to int32
-            return (int32_t)(in_data / my_2pi * 100000.0);
+            return (int32_t)(in_data / M_PI / 2.0 * 100000.0);
         case 1: // angle float pos/vel to int32
             return (int32_t)(in_data / 360.0 * 100000.0);
         case 2: // float torque to int32
@@ -71,7 +81,7 @@ inline float Motor::int2float(int32_t in_data, uint8_t type)
     switch (type)
     {
         case 0: // radian float pos/vel to int32
-            return (float)(in_data * my_2pi / 100000.0);
+            return (float)(in_data * M_PI / 2.0 / 100000.0);
         case 1: // angle float pos/vel to int32
             return (float)(in_data * 360.0 / 100000.0);
         case 2: // float torque to int32

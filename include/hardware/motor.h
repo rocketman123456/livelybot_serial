@@ -1,11 +1,11 @@
-#ifndef _MOTOR_H_
-#define _MOTOR_H_
+#pragma once
 
 #include "livelybot_msg/MotorCmd.h"
 #include "livelybot_msg/MotorState.h"
 #include "serial_struct.h"
 
 #include <ros/ros.h>
+
 #include <stdint.h>
 #include <string>
 
@@ -51,4 +51,3 @@ public:
     cdc_acm_rx_message_t* return_cmd_p() { return &m_cmd; }
     motor_back_t*         get_current_motor_state() { return &m_data; }
 };
-#endif
